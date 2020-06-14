@@ -6,9 +6,14 @@ let money = 30000,
     mission = 50000,
     period = 7;
 
-console.log('money: ', typeof (money));
-console.log('income: ', typeof (income));
-console.log('deposit: ', typeof (deposit));
+let showTypeOf = function(data) {
+        console.log('data: ', typeof (data));
+    };
+
+showTypeOf(money);
+showTypeOf(income);
+showTypeOf(deposit);
+
 console.log('Длина строки addExpenses: ', addExpenses.length);
 console.log('Период равен (period) месяцев: ', period);
 console.log('Цель заработать (mission) рублей/долларов/гривен/юани: ', mission);
@@ -32,19 +37,33 @@ for(let i = 0; i < 2; i++) {
     }
 }
 
-let budgetMonth = money - amount1 - amount2;
-console.log('Бюджет на месяц: ', budgetMonth);
-console.log('Цель будет достигнута за:', Math.ceil(mission / budgetMonth), 'месяцев');
-
-budgetDay = Math.floor(budgetMonth / 30);
-console.log('Бюджет на день:', budgetDay);
-
-if (budgetDay >= 1200) {
-    console.log('У вас высокий уровень дохода');
-} else if (budgetDay > 600 && budgetDay < 1200) {
-    console.log('У вас средний уровень дохода');
-} else if (budgetDay <= 600 && budgetDay >= 0) {
-    console.log('К сожалению у вас уровень дохода ниже среднего');
-} else {
-    console.log('Что то пошло не так');
+function getStatusIncome() {
+    if (budgetDay >= 1200) {
+        console.log('У вас высокий уровень дохода');
+    } else if (budgetDay > 600 && budgetDay < 1200) {
+        console.log('У вас средний уровень дохода');
+    } else if (budgetDay <= 600 && budgetDay >= 0) {
+        console.log('К сожалению у вас уровень дохода ниже среднего');
+    } else {
+        console.log('Что то пошло не так');
+    }
 }
+
+getStatusIncome();
+
+function getExpensesMonth () {
+    return Number(amount1) + Number(amount2);
+}
+console.log('Расходы за месяц: ', getExpensesMonth());
+
+function getAccumulatedMonth () {
+    return money - getExpensesMonth();
+}
+
+let accumulatedMonth = getAccumulatedMonth();
+
+let getTargetMonth = Math.ceil(mission / accumulatedMonth);
+console.log('Цель будет достигнута за: ', getTargetMonth);
+
+budgetDay = Math.floor(accumulatedMonth / 30);
+console.log('Бюджет на день: ', budgetDay);
