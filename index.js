@@ -76,14 +76,18 @@ let appData = {
         let cashExpenses = document.querySelectorAll('.expenses-amount'),
             itemExpenses = document.querySelectorAll('.expenses-title');
         if (expensesItems.length === 2) {
-            cashExpenses[1].placeholder = '0';
+            cashExpenses[1].placeholder = 'Сумма';
             cashExpenses[1].value = itemExpenses[2].value = '';
             itemExpenses[2].placeholder = 'Наименование';
+            appData.searchName();
+            appData.searchAmount();
         } else if (expensesItems.length === 3) {
             expensesPlus.style.display = 'none';
-            cashExpenses[2].placeholder = '0';
+            cashExpenses[2].placeholder = 'Сумма';
             cashExpenses[2].value = itemExpenses[3].value = '';
             itemExpenses[3].placeholder = 'Наименование';
+            appData.searchName();
+            appData.searchAmount();
         }
     },
     addIncomeBlock: function () {
@@ -93,14 +97,18 @@ let appData = {
         let itemIncome = document.querySelectorAll('.income-title'),
             cashIncome = document.querySelectorAll('.income-amount');
         if (incomeItems.length === 2) {
-            cashIncome[1].placeholder = '0';
+            cashIncome[1].placeholder = 'Сумма';
             cashIncome[1].value = itemIncome[2].value = '';
             itemIncome[2].placeholder = 'Наименование';
+            appData.searchName();
+            appData.searchAmount();
         } else if (incomeItems.length === 3) {
             incomePlus.style.display = 'none';
-            cashIncome[2].placeholder = '0';
+            cashIncome[2].placeholder = 'Сумма';
             cashIncome[2].value = itemIncome[3].value = '';
             itemIncome[3].placeholder = 'Наименование';
+            appData.searchName();
+            appData.searchAmount();
         }
     },
     getAddExpenses: function () {
@@ -196,8 +204,27 @@ let appData = {
             start.disabled = false;
             start.addEventListener('click', appData.start);
         }
+    },
+    searchAmount: function() {
+        let amountField = document.querySelectorAll('[placeholder = "Сумма"]');  
+        amountField.forEach(function(item) {
+            item.addEventListener('input', function() {
+                item.value = item.value.replace(/[^0-9]/, '');
+            });
+        });
+    },
+    searchName: function() {
+        let nameField = document.querySelectorAll('[placeholder = "Наименование"]');
+        nameField.forEach(function(item) {
+            item.addEventListener('input', function() {
+                item.value = item.value.replace(/[^А-я.,'";:`!?\s]/, '');
+            });
+        });
     }
 };
+
+appData.searchName();
+appData.searchAmount();
 
 salaryAmount.addEventListener('input', appData.emptyField);
 
@@ -206,6 +233,7 @@ periodSelect.addEventListener('input', appData.slider);
 incomePlus.addEventListener('click', appData.addIncomeBlock);
 
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
+
 
 
 
