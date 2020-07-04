@@ -12,6 +12,7 @@ let start = document.querySelector('#start'),
     additionalExpensesValue = document.getElementsByClassName('additional_expenses-value')[0],
     expensesTitle = document.querySelector('input.expenses-title'),
     expensesItems = document.querySelectorAll('.expenses-items'),
+    incomeItems = document.querySelectorAll('.income-items'),
     additionalExpensesItem = document.querySelector('.additional_expenses-item'),
     targetAmount = document.querySelector('.target-amount'),
     periodSelect = document.querySelector('.period-select'),
@@ -21,8 +22,7 @@ let start = document.querySelector('#start'),
     expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0],
     incomePeriodValue = document.getElementsByClassName('income_period-value')[0],
     targetMonthValue = document.getElementsByClassName('target_month-value')[0],
-    additionalExpenses = document.querySelector('.additional_expenses'),
-    incomeItems = document.querySelectorAll('.income-items');
+    additionalExpenses = document.querySelector('.additional_expenses');
 
 start.disabled = true;
 
@@ -57,6 +57,11 @@ let appData = {
         appData.getBudget();
 
         appData.showResult();
+        if (this.textContent === 'Рассчитать') {
+            appData.lock();
+        } else {
+            appData.resetLock();
+        }
     },
     showResult: function () {
         budgetMonthValue.value = appData.budgetMonth;
@@ -205,21 +210,59 @@ let appData = {
             start.addEventListener('click', appData.start);
         }
     },
-    searchAmount: function() {
-        let amountField = document.querySelectorAll('[placeholder = "Сумма"]');  
-        amountField.forEach(function(item) {
-            item.addEventListener('input', function() {
+    searchAmount: function () {
+        let amountField = document.querySelectorAll('[placeholder = "Сумма"]');
+        amountField.forEach(function (item) {
+            item.addEventListener('input', function () {
                 item.value = item.value.replace(/[^0-9]/, '');
             });
         });
     },
-    searchName: function() {
+    searchName: function () {
         let nameField = document.querySelectorAll('[placeholder = "Наименование"]');
-        nameField.forEach(function(item) {
-            item.addEventListener('input', function() {
+        nameField.forEach(function (item) {
+            item.addEventListener('input', function () {
                 item.value = item.value.replace(/[^А-я.,'";:`!?\s]/, '');
             });
         });
+    },
+    lock: function () {
+        /* Блокировка левой части */
+        let typeText = document.querySelectorAll('.data [type = "text"]');
+        typeText.forEach(function (item) {
+            item.disabled = true;
+        });
+        incomePlus.disabled = true;
+        expensesPlus.disabled = true;
+        start.textContent = 'Сбросить';
+    },
+    resetLock: function () {
+        /* Сброс в начальное положение */
+        let typeText = document.querySelectorAll('[type = "text"]');
+        typeText.forEach(function (item) {
+            item.disabled = false;
+            item.value = null;
+        });
+        incomePlus.disabled = false;
+        expensesPlus.disabled = false;
+        start.textContent = 'Рассчитать';
+        start.disabled = true;
+        salaryAmount.addEventListener('input', appData.emptyField);
+        appData.removeBlock();
+    },
+    removeBlock: function () {
+        expensesItems.forEach(function (item, i) {
+            if( i > 0 ) {
+                item.remove();
+            }            
+        });
+        incomeItems.forEach(function (item, i) {
+            if( i > 0 ) {
+                item.remove();
+            }  
+        });
+        incomePlus.style.display = 'block';
+        expensesPlus.style.display = 'block';
     }
 };
 
