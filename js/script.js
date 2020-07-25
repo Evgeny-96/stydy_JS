@@ -69,7 +69,7 @@ class Todo {
 
     completedItem(elem) {
         console.log('elem: ', elem.key);
-
+    //    this.todoData.forEach(e => console.log(e.value));
     }
 
     handler(elem) {
