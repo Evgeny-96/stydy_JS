@@ -24,7 +24,7 @@ class Todo {
     createItem (elem) {
         const li = document.createElement('li');
         li.classList.add('todo-item');
-        li.key = this.key;
+        li.key = elem.key;
         li.insertAdjacentHTML('beforeend', `
             <span class="text-todo">${elem.value}</span>
             <div class="todo-buttons">
@@ -63,13 +63,26 @@ class Todo {
     }
 
     deleteItem(elem) {
-        console.log('elem удаление: ', elem);
-        //найти по ключу и вызвать render
+        this.todoData.forEach(e => {
+            if(e.key === elem.key) {
+                this.todoData.delete( elem.key);
+                this.render();
+            }
+        });
     }
 
     completedItem(elem) {
-        console.log('elem: ', elem.key);
-    //    this.todoData.forEach(e => console.log(e.value));
+        this.todoData.forEach((e) => {
+            if(e.key === elem.key) {
+                if(e.completed === true) {
+                    e.completed = false;
+                    this.render();
+                } else {
+                    e.completed = true;
+                    this.render();
+                }
+            }
+        });
     }
 
     handler(elem) {
